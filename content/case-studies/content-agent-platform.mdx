@@ -1,0 +1,59 @@
+---
+title: "Scheduled AI agents with approval gates and budgets"
+slug: content-agent-platform
+order: 5
+outcome: "A small agent platform where each agent is one handler and one database row, runs on a schedule, stays within a budget, and waits for a person before publishing."
+tags: [Agents, Evaluation, Platform]
+org: "A multi-brand education group's marketing team"
+role: "Architect and builder"
+period: "2026"
+repo: llm-gateway
+metrics:
+  - {value: "1 + 1", label: "handler file plus database row per new agent"}
+  - {value: "0", label: "posts published without a human or rule check"}
+  - {value: "Per run", label: "audit trail with steps and cost"}
+diagram:
+  - {label: "Schedule", note: "cron, per site"}
+  - {label: "Agent handler", note: "typed registry"}
+  - {label: "Model calls", note: "model chosen per job"}
+  - {label: "Quality checks", note: "rules gate, AI judge flags"}
+  - {label: "Approval gate", note: "draft waits for a person"}
+  - {label: "Publish to the CMS", note: "audit log, cost recorded"}
+---
+
+## Context
+
+The marketing team wanted regular, on-brand content for several sites without hiring a writer per site. They also wanted control: nothing published that a person had not seen, and no surprise bills.
+
+## What I built
+
+A dashboard of AI agents that run on schedules. The first agent writes a daily blog post:
+1. pick a topic
+2. draft against a per-site SEO checklist
+3. source a real hero photo
+4. publish to the organisation's headless CMS, or queue a draft for approval
+
+Every run is recorded with its steps, status and estimated cost.
+
+## Key decisions
+
+- **A typed registry instead of a heavy agent framework.** I recorded why we reimplemented an open-source agent platform's concepts rather than forking its runtime. A new agent is one handler and one row.
+- **Rules gate, the AI judge only flags.** Objective SEO rules are checked in code and can block. Subjective qualities are scored by a calibrated AI judge that flags but never blocks publishing on its own.
+- **Budgets per schedule.** Monthly budgets, global and per schedule, are computed from token usage. A run shows idle, running or error, and can be cancelled.
+- **Model choice as a recorded decision.** Each job uses the cheapest model that meets its quality bar, and the reasoning is written down.
+
+## How quality was measured
+
+Deterministic SEO checks on every draft, AI-judge scores tracked over time, and human approval rates per agent [confirm].
+
+## Results
+
+- One site connected and publishing in the first production phase [confirm].
+- New agents added with one handler and one configuration row.
+- Every run auditable, with cost recorded.
+
+## What I would do next
+
+Add more agent types on the same registry, and route model calls through a central gateway so budgets and redaction are enforced once for every agent.
+
+The public LLM gateway repository shows that next step: one API across providers, team budgets, redaction before logging, and fallbacks.

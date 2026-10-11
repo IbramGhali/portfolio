@@ -1,0 +1,59 @@
+---
+title: "Voice AI receptionist with tool-calling webhooks"
+slug: voice-ai-receptionist
+order: 4
+outcome: "A voice agent that answers calls, checks availability, books appointments and writes a structured call record, with its knowledge updated automatically from a document."
+tags: [Voice AI, Agents]
+org: "A training provider's admissions team"
+role: "Designer and builder"
+period: "[confirm]"
+repo: voice-ai-receptionist
+metrics:
+  - {value: "4", label: "tools the voice agent calls over webhooks"}
+  - {value: "4", label: "structured fields extracted after each call [confirm]"}
+  - {value: "0", label: "manual steps to update the agent's knowledge"}
+diagram:
+  - {label: "Caller", note: "phone line"}
+  - {label: "Voice platform", note: "speech, model, voice"}
+  - {label: "Tool webhooks", note: "lookup, availability, booking, callback"}
+  - {label: "CRM calendar and contacts", note: "booking written back"}
+  - {label: "End-of-call processing", note: "extraction to a reporting sheet"}
+  - {label: "Knowledge document", note: "edits pushed to the agent automatically"}
+---
+
+## Context
+
+Admissions staff spent much of the day answering the same questions and booking calls back. Calls outside office hours were lost.
+
+## What I built
+
+A voice assistant on a voice-AI platform with four tools exposed as webhooks:
+
+1. contact lookup
+2. availability
+3. booking
+4. callback scheduling
+
+All four ran against the CRM's calendar. After each call, a processing workflow extracted structured fields from the transcript for reporting. When staff edited the knowledge document, the change was pushed to the assistant automatically.
+
+## Key decisions
+
+- **Tools, not prompt knowledge, for anything that changes.** Availability and bookings come from the calendar at call time, never from the prompt.
+- **Knowledge as a document staff already edit.** Updating the assistant became editing a document, with no technical step.
+- **Structured post-call data.** Every call produced the same fields, so reporting did not depend on reading transcripts.
+
+## How quality was measured
+
+Scripted test calls covering the main intents before each change [confirm], and review of extracted fields against transcripts.
+
+## Results
+
+- After-hours calls answered and booked instead of lost [confirm].
+- Knowledge updates with no developer involvement.
+- Add a measured outcome here if you have one, for example booking rate or staff hours saved [confirm].
+
+## What I would do next
+
+Move business rules (opening hours, double-booking prevention, who may see which record) out of the prompt and into a tested service. Make escalation categories mandatory and audited. That is the design of the public rebuild.
+
+The public repository implements that version: a webhook service with a 30-scenario offline simulator, zero hallucinated bookings, and an n8n alternative.

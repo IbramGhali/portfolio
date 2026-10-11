@@ -1,0 +1,57 @@
+---
+title: "Internal AI platform for a six-department organisation"
+slug: internal-ai-platform
+order: 3
+outcome: "One portal for six departments, with a tool-using assistant over a synced knowledge base, AI pipelines for compliance and grading, and usage and cost tracked per tool."
+tags: [RAG, Agents, Platform]
+org: "A multi-country vocational education group"
+role: "Lead engineer and architect"
+period: "2026"
+repo: rag-slack-assistant
+metrics:
+  - {value: "6", label: "departments on one portal"}
+  - {value: "~770", label: "of ~860 commits authored [confirm]"}
+  - {value: "1", label: "typed tool registry shared by every assistant"}
+diagram:
+  - {label: "Single sign-on portal", note: "one app per department"}
+  - {label: "Assistant with typed tool registry", note: "read-only tools"}
+  - {label: "Knowledge base", note: "documents synced by checksum, pgvector"}
+  - {label: "PII redaction and rate limits", note: "before any model call"}
+  - {label: "Usage ledger", note: "cost and failures per tool"}
+  - {label: "Scheduled AI pipelines", note: "compliance, grading, triage"}
+---
+
+## Context
+
+Sales, HR, operations, student services, support and engineering each had their own tools, spreadsheets and low-code automations. AI was being added piecemeal, each feature with its own keys, prompts and logging.
+
+## What I built
+
+A monorepo of department apps on one shared database with row-level security, behind a single sign-in. It holds three AI capabilities on shared plumbing:
+
+1. **A chat assistant platform.** Several assistants share a typed tool registry covering CRM, contact centre, compliance, grading, stock, recruitment and knowledge. They stream responses, redact personal information, rate-limit, and log usage per tool. Tools are read-only by default.
+2. **A knowledge base.** A shared document folder is synced by checksum. Changed files are re-embedded, removed files are deleted, and a guard stops accidental mass removal.
+3. **Scheduled AI pipelines.** Compliance review of sales calls, multimodal assignment grading, and support-ticket triage, all built on a job queue with failures routed to people.
+
+## Key decisions
+
+- **One tool registry, many assistants.** A new capability is one typed tool, available to any assistant that is allowed it, instead of a new bot.
+- **Read-only first.** Assistants answer and draft; actions that change records stay with people.
+- **Honesty over confidence.** The triage assistant's rule is to say when it is unsure, rather than guess a category.
+- **Models as configuration.** A model-per-stage table and per-tool usage ledger made model changes and cost questions routine.
+
+## How quality was measured
+
+Golden sets for the compliance and grading pipelines, cost and failure dashboards per tool, and documentation generated from the source, so it could not drift.
+
+## Results
+
+- Six departments on one portal and one data model [confirm wording].
+- The grading pipeline was built and tested across 443 rubrics, but was not switched on because the learning-platform webhooks were never connected [confirm whether to mention].
+- Hundreds of database migrations and most of the commits authored personally [confirm figures].
+
+## What I would do next
+
+Move the assistant's knowledge to hybrid retrieval with re-ranking, measured on a golden set, which is exactly what the public demo explores.
+
+The public repository rebuilds the knowledge-assistant part: section-aware chunking, hybrid retrieval, refusal below an evidence threshold, citations checked in code, and a Slack front end.

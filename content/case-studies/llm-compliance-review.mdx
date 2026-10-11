@@ -1,0 +1,58 @@
+---
+title: "LLM compliance review for every sales call"
+slug: llm-compliance-review
+order: 1
+outcome: "Replaced three 60-step low-code workflows with one config-driven pipeline that reviews thousands of sales calls a month against 43 rules."
+tags: [Evaluation, Agents, Platform]
+org: "A multi-country vocational education group"
+role: "Lead AI engineer: architecture, build, rollout and evaluation"
+period: "2026"
+repo: llm-compliance-judge
+metrics:
+  - {value: "3 to 1", label: "workflows consolidated into one pipeline"}
+  - {value: "43", label: "compliance rules, stored as data"}
+  - {value: "~3,600", label: "LLM calls in a typical 30 days [confirm]"}
+diagram:
+  - {label: "New enrolments in the CRM", note: "scheduled pull"}
+  - {label: "Match the call recording transcript", note: "contact-centre platform"}
+  - {label: "Stage 1: evidence extraction", note: "fast, low-cost model"}
+  - {label: "Stage 2: rule assessment", note: "stronger model, rules by region and payment type"}
+  - {label: "Verdicts, evidence and alerts", note: "database, notifications"}
+  - {label: "Reviewer confirms or dismisses", note: "feedback rewords rules"}
+---
+
+## Context
+
+Sales calls for course enrolments had to meet consumer-protection rules that differ by country and by payment method. Compliance was checked by three near-identical low-code workflows, one per region, each over 60 steps long. Changing a rule meant editing three workflows and hoping they stayed in step. Analysis showed the regional prompts were 96% identical.
+
+## What I built
+
+A single pipeline inside the organisation's internal portal. A scheduled job picks up new enrolments, matches each one to its call transcript, and runs two stages:
+
+1. **Extraction:** a fast, inexpensive model records what was said, with quotes.
+2. **Assessment:** a stronger model decides, rule by rule, whether anything was breached.
+
+Rules live in a database table, scoped by region and payment method, so compliance staff can change wording without a deployment. Breaches raise notifications, and every verdict is stored with its evidence.
+
+## Key decisions
+
+- **Two stages instead of one large prompt.** Finding statements and judging them are different jobs. Splitting them made errors traceable and let the cheap model do the high-volume work.
+- **Rules and models as data.** A model-per-stage table means a model can be swapped without code changes, and every rule is versioned.
+- **Learn from reviewers, not from past verdicts.** Reviewer confirm, dismiss and missed-breach feedback drives rule rewording. The alternative was storing past verdicts in a vector store, and I argued against it because it would quietly reinforce old mistakes.
+- **Cost and failure telemetry per stage.** Token use and failures are tracked per tool, so cost surprises show up the same day.
+
+## How quality was measured
+
+A golden set of reviewed calls, scored on each change, with re-review tooling for disputed verdicts. Reviewer agreement and per-rule fire rates are tracked over time.
+
+## Results
+
+- Three regional workflows replaced by one config-driven pipeline.
+- 43 rules managed as data rather than inside prompts.
+- Thousands of calls a month. In a typical 30 days that was roughly 3,600 LLM calls and around 65 million input tokens across the two stages [confirm], and nearly 2,000 compliance reports to date [confirm].
+
+## What I would do next
+
+Calibrate confidence per rule against reviewer decisions, so only the uncertain band goes to people, and replay recorded calls nightly as a regression gate.
+
+The public repository rebuilds this pattern on synthetic data, with its evaluation harness, review queue and CI gate.
