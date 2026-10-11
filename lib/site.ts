@@ -7,7 +7,7 @@ export const SITE = {
     "LLM pipelines, AI agents, RAG assistants and the evaluation and controls that make them safe to rely on.",
   github: "https://github.com/IbramGhali",
   linkedin: "https://www.linkedin.com/in/ibramghali",
-  url: "https://ibramghali.dev", // [confirm] final domain
+  url: "https://ibramghali.vercel.app",
 };
 
 export type Repo = { name: string; summary: string; result: string; tags: string[] };

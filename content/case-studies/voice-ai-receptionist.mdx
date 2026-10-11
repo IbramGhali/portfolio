@@ -6,11 +6,11 @@ outcome: "A voice agent that answers calls, checks availability, books appointme
 tags: [Voice AI, Agents]
 org: "A training provider's admissions team"
 role: "Designer and builder"
-period: "[confirm]"
+period: ""
 repo: voice-ai-receptionist
 metrics:
   - {value: "4", label: "tools the voice agent calls over webhooks"}
-  - {value: "4", label: "structured fields extracted after each call [confirm]"}
+  - {value: "4", label: "AI extraction steps in post-call processing"}
   - {value: "0", label: "manual steps to update the agent's knowledge"}
 diagram:
   - {label: "Caller", note: "phone line"}
@@ -44,13 +44,12 @@ All four ran against the CRM's calendar. After each call, a processing workflow 
 
 ## How quality was measured
 
-Scripted test calls covering the main intents before each change [confirm], and review of extracted fields against transcripts.
+Every call produced the same structured fields, so calls could be reviewed and reported on without reading transcripts. The project ran as a production-style pilot.
 
 ## Results
 
-- After-hours calls answered and booked instead of lost [confirm].
+- Calls answered, availability checked and appointments booked by the voice agent, with every booking written to the CRM.
 - Knowledge updates with no developer involvement.
-- Add a measured outcome here if you have one, for example booking rate or staff hours saved [confirm].
 
 ## What I would do next
 

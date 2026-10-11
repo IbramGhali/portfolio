@@ -43,10 +43,12 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
           <dt className="font-medium">My role</dt>
           <dd className="mt-1 text-muted">{c.role}</dd>
         </div>
-        <div>
-          <dt className="font-medium">When</dt>
-          <dd className="mt-1 text-muted">{c.period}</dd>
-        </div>
+        {c.period ? (
+          <div>
+            <dt className="font-medium">When</dt>
+            <dd className="mt-1 text-muted">{c.period}</dd>
+          </div>
+        ) : null}
       </dl>
 
       <div className="mt-10">

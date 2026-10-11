@@ -38,8 +38,7 @@ export default function About() {
         </p>
         <p>
           Before AI engineering I worked in data analytics and automation, which is where the
-          habit of measuring everything comes from. [confirm: short career line and current role
-          wording]
+          habit of measuring everything comes from.
         </p>
       </div>
 
@@ -55,13 +54,9 @@ export default function About() {
 
       <h2 className="mt-12 text-xl font-semibold tracking-tight">Leadership and consulting</h2>
       <p className="mt-3 leading-7 text-muted">
-        I have led engineering rebuilds, run AI-assisted engineering teams with written
-        invariants and test gates, and advised organisations on where AI belongs and where it
-        does not. [confirm]
+        I have led engineering rebuilds and run AI-assisted engineering teams with written
+        invariants and test gates.
       </p>
-
-      <h2 className="mt-12 text-xl font-semibold tracking-tight">Education</h2>
-      <p className="mt-3 leading-7 text-muted">[confirm: degree, institution, year]</p>
     </div>
   );
 }

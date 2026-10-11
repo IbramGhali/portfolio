@@ -11,7 +11,7 @@ repo: llm-compliance-judge
 metrics:
   - {value: "3 to 1", label: "workflows consolidated into one pipeline"}
   - {value: "43", label: "compliance rules, stored as data"}
-  - {value: "~3,600", label: "LLM calls in a typical 30 days [confirm]"}
+  - {value: "~3,600", label: "LLM calls in one 30-day period"}
 diagram:
   - {label: "New enrolments in the CRM", note: "scheduled pull"}
   - {label: "Match the call recording transcript", note: "contact-centre platform"}
@@ -49,7 +49,7 @@ A golden set of reviewed calls, scored on each change, with re-review tooling fo
 
 - Three regional workflows replaced by one config-driven pipeline.
 - 43 rules managed as data rather than inside prompts.
-- Thousands of calls a month. In a typical 30 days that was roughly 3,600 LLM calls and around 65 million input tokens across the two stages [confirm], and nearly 2,000 compliance reports to date [confirm].
+- Thousands of calls a month: in one 30-day period, roughly 3,600 LLM calls and around 65 million input tokens across the two stages, and nearly 2,000 compliance reports produced in total.
 
 ## What I would do next
 
